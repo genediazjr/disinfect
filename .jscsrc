@@ -1,0 +1,86 @@
+{
+  "excludeFiles": [
+    "node_modules/*"
+  ],
+  "requireCurlyBraces": [
+    "if",
+    "else",
+    "for",
+    "while",
+    "do",
+    "try",
+    "catch"
+  ],
+  "requireSpaceAfterKeywords": [
+    "if",
+    "else",
+    "for",
+    "while",
+    "do",
+    "switch",
+    "case",
+    "return",
+    "try",
+    "catch",
+    "function",
+    "typeof"
+  ],
+  "disallowDanglingUnderscores": {
+    "allExcept": [
+      "_disinfect",
+      "_exception",
+      "_private"
+    ]
+  },
+  "disallowImplicitTypeConversion": [
+    "numeric",
+    "boolean",
+    "binary",
+    "string"
+  ],
+  "disallowKeywords": [
+    "with"
+  ],
+  "disallowSpaceBeforeBinaryOperators": [
+    ","
+  ],
+  "requireCamelCaseOrUpperCaseIdentifiers": {
+    "ignoreProperties": true
+  },
+  "disallowSpacesInNamedFunctionExpression": {
+    "beforeOpeningRoundBrace": true
+  },
+  "disallowSpacesInFunctionDeclaration": {
+    "beforeOpeningRoundBrace": true
+  },
+  "disallowSpaceBeforePostfixUnaryOperators": true,
+  "disallowSpaceAfterPrefixUnaryOperators": true,
+  "disallowNewlineBeforeBlockStatements": true,
+  "disallowSpacesInsideArrayBrackets": true,
+  "disallowSpacesInsideParentheses": true,
+  "disallowSpaceAfterObjectKeys": true,
+  "disallowQuotedKeysInObjects": true,
+  "disallowMixedSpacesAndTabs": true,
+  "disallowTrailingWhitespace": true,
+  "disallowYodaConditions": true,
+  "disallowTrailingComma": true,
+  "disallowUnusedParams": true,
+  "disallowEmptyBlocks": true,
+  "disallowTabs": true,
+  "disallowVar": true,
+  "requireSpacesInsideImportedObjectBraces": true,
+  "requireSpacesInConditionalExpression": true,
+  "requirePaddingNewLinesAfterUseStrict": true,
+  "requireSpaceBeforeBlockStatements": true,
+  "requireSpaceBeforeBinaryOperators": true,
+  "requireSpacesInsideObjectBrackets": "all",
+  "requireSpaceAfterBinaryOperators": true,
+  "requireCapitalizedConstructors": true,
+  "requireParenthesesAroundIIFE": true,
+  "requireLineFeedAtFileEnd": true,
+  "requireBlocksOnNewline": 1,
+  "validateIndentation": 4,
+  "validateQuoteMarks": "'",
+  "requireDotNotation": true,
+  "requireUseStrict": true
+}

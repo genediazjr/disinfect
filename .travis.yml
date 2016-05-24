@@ -1,0 +1,5 @@
+language: node_js
+node_js:
+  - "4"
+
+after_script: NODE_ENV=test lab -r lcov | ./node_modules/.bin/coveralls

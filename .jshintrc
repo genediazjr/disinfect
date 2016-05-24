@@ -1,0 +1,17 @@
+{
+  "predef": [
+    "JSON"
+  ],
+  "strict": "global",
+  "esversion": 6,
+  "plusplus": false,
+  "eqeqeq": true,
+  "unused": true,
+  "nonew": true,
+  "noarg": true,
+  "undef": true,
+  "curly": true,
+  "forin": true,
+  "mocha": true,
+  "node": true
+}

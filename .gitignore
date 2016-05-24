@@ -1,0 +1,18 @@
+# fs
+.DS_Store
+Thumbs.db
+
+# logs
+*.log
+
+# libs
+node_modules/*
+
+# ide
+.idea
+
+# dropbox
+Icon?
+.dropbox
+
+coverage.html

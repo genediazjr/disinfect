@@ -1,0 +1,41 @@
+{
+  "name": "disinfect",
+  "version": "0.1.0",
+  "author": "Gene Diaz <genediazjr@gmail.com> (http://genediazjr.com/)",
+  "description": "Request query, payload, and params sanitation",
+  "keywords": [
+    "hapi",
+    "plugin",
+    "sanitizer",
+    "query sanitizer",
+    "payload sanitizer",
+    "parameter sanitizer",
+    "google caja",
+    "caja"
+  ],
+  "license": "MIT",
+  "repository": "git://github.com/genediazjr/disinfect",
+  "bugs": "https://github.com/genediazjr/disinfect/issues",
+  "main": "lib/index.js",
+  "engines": {
+    "node": ">=4.0.0"
+  },
+  "scripts": {
+    "test": "jscs ./ && jshint ./ && lab -c -v -L -a code -t 100",
+    "test-cover": "lab -c -v -L -a code -t 100 -r html -o ./coverage.html -L && open ./coverage.html"
+  },
+  "dependencies": {
+    "sanitizer": "0.1.x",
+    "async": "1.5.x",
+    "hoek": "4.0.x",
+    "joi": "8.1.x"
+  },
+  "devDependencies": {
+    "coveralls": "2.11.x",
+    "jshint": "2.9.x",
+    "hapi": "13.4.x",
+    "jscs": "3.0.x",
+    "code": "3.0.x",
+    "lab": "10.6.x"
+  }
+}
