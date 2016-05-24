@@ -92,7 +92,7 @@ All options can be passed on a per-[route] (http://hapijs.com/api#route-options)
 ## Contributing
 * Include 100% test coverage
 * Follow the [Hapi coding conventions] (http://hapijs.com/styleguide)
-* Submit an issue first for significat changes.
+* Submit an issue first for significant changes.
 
 ## Credits
 * [hapi-sanitize-payload] (https://github.com/lob/hapi-sanitize-payload) - Hapi plugin to sanitize the request payload
