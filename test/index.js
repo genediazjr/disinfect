@@ -120,7 +120,7 @@ describe('registration and functionality', () => {
                     }, (res) => {
 
                         expect(res.statusCode).to.be.equal(200);
-                        expect(res.result).to.deep.equal({ c: 'c' });
+                        expect(res.result).to.equal({ c: 'c' });
 
                         return doneTest();
                     });
@@ -134,7 +134,7 @@ describe('registration and functionality', () => {
                     }, (res) => {
 
                         expect(res.statusCode).to.be.equal(200);
-                        expect(res.result).to.deep.equal({ c: 'c' });
+                        expect(res.result).to.equal({ c: 'c' });
 
                         return doneTest();
                     });
@@ -193,7 +193,7 @@ describe('registration and functionality', () => {
                     }, (res) => {
 
                         expect(res.statusCode).to.be.equal(200);
-                        expect(res.result).to.deep.equal({ c: 'c' });
+                        expect(res.result).to.equal({ c: 'c' });
 
                         return doneTest();
                     });
@@ -207,7 +207,7 @@ describe('registration and functionality', () => {
                     }, (res) => {
 
                         expect(res.statusCode).to.be.equal(200);
-                        expect(res.result).to.deep.equal({ c: 'c' });
+                        expect(res.result).to.equal({ c: 'c' });
 
                         return doneTest();
                     });
@@ -236,7 +236,7 @@ describe('registration and functionality', () => {
                     }, (res) => {
 
                         expect(res.statusCode).to.be.equal(200);
-                        expect(res.result).to.deep.equal({ c: 'c' });
+                        expect(res.result).to.equal({ c: 'c' });
 
                         return doneTest();
                     });
@@ -249,7 +249,7 @@ describe('registration and functionality', () => {
                     }, (res) => {
 
                         expect(res.statusCode).to.be.equal(200);
-                        expect(res.result).to.deep.equal({ b: '5' });
+                        expect(res.result).to.equal({ b: '5' });
 
                         return doneTest();
                     });
@@ -263,7 +263,7 @@ describe('registration and functionality', () => {
                     }, (res) => {
 
                         expect(res.statusCode).to.be.equal(200);
-                        expect(res.result).to.deep.equal({ c: 'c' });
+                        expect(res.result).to.equal({ c: 'c' });
 
                         return doneTest();
                     });
@@ -338,7 +338,7 @@ describe('registration and functionality', () => {
                     }, (res) => {
 
                         expect(res.statusCode).to.be.equal(200);
-                        expect(res.result).to.deep.equal({ c: 'c' });
+                        expect(res.result).to.equal({ c: 'c' });
 
                         return doneTest();
                     });
@@ -351,7 +351,7 @@ describe('registration and functionality', () => {
                     }, (res) => {
 
                         expect(res.statusCode).to.be.equal(200);
-                        expect(res.result).to.deep.equal({ b: 'c' });
+                        expect(res.result).to.equal({ b: 'c' });
 
                         return doneTest();
                     });
@@ -365,7 +365,7 @@ describe('registration and functionality', () => {
                     }, (res) => {
 
                         expect(res.statusCode).to.be.equal(200);
-                        expect(res.result).to.deep.equal({ c: 'c' });
+                        expect(res.result).to.equal({ c: 'c' });
 
                         return doneTest();
                     });
@@ -391,7 +391,7 @@ describe('registration and functionality', () => {
             }, (res) => {
 
                 expect(res.statusCode).to.be.equal(200);
-                expect(res.result).to.deep.equal({ a: '<b>hello <i>world</i></b>' });
+                expect(res.result).to.equal({ a: '<b>hello <i>world</i></b>' });
 
                 return done();
             });
@@ -426,7 +426,7 @@ describe('registration and functionality', () => {
             }, (res) => {
 
                 expect(res.statusCode).to.be.equal(200);
-                expect(res.result).to.deep.equal({ a: '<b>hello <i>world</i></b>' });
+                expect(res.result).to.equal({ a: '<b>hello <i>world</i></b>' });
 
                 return done();
             });
@@ -447,7 +447,7 @@ describe('registration and functionality', () => {
             }, (res) => {
 
                 expect(res.statusCode).to.be.equal(200);
-                expect(res.result).to.deep.equal({ a: '<b>hello <i>world</i></b>' });
+                expect(res.result).to.equal({ a: '<b>hello <i>world</i></b>' });
 
                 return done();
             });
@@ -482,7 +482,7 @@ describe('registration and functionality', () => {
             }, (res) => {
 
                 expect(res.statusCode).to.be.equal(200);
-                expect(res.result).to.deep.equal({ a: '<b>hello <i>world</i></b>' });
+                expect(res.result).to.equal({ a: '<b>hello <i>world</i></b>' });
 
                 return done();
             });
@@ -504,7 +504,7 @@ describe('registration and functionality', () => {
             }, (res) => {
 
                 expect(res.statusCode).to.be.equal(200);
-                expect(res.result).to.deep.equal({ a: '<b>hello <i>world</i></b>' });
+                expect(res.result).to.equal({ a: '<b>hello <i>world</i></b>' });
 
                 return done();
             });
@@ -540,7 +540,7 @@ describe('registration and functionality', () => {
             }, (res) => {
 
                 expect(res.statusCode).to.be.equal(200);
-                expect(res.result).to.deep.equal({ a: '<b>hello <i>world</i></b>' });
+                expect(res.result).to.equal({ a: '<b>hello <i>world</i></b>' });
 
                 return done();
             });
@@ -573,7 +573,7 @@ describe('registration and functionality', () => {
                     }, (res) => {
 
                         expect(res.statusCode).to.be.equal(200);
-                        expect(res.result).to.deep.equal({ a: 'ax', b: 'bx', c: 'cx' });
+                        expect(res.result).to.equal({ a: 'ax', b: 'bx', c: 'cx' });
 
                         return doneTest();
                     });
@@ -586,7 +586,7 @@ describe('registration and functionality', () => {
                     }, (res) => {
 
                         expect(res.statusCode).to.be.equal(200);
-                        expect(res.result).to.deep.equal({ a: 'ax', b: 'bx' });
+                        expect(res.result).to.equal({ a: 'ax', b: 'bx' });
 
                         return doneTest();
                     });
@@ -600,7 +600,7 @@ describe('registration and functionality', () => {
                     }, (res) => {
 
                         expect(res.statusCode).to.be.equal(200);
-                        expect(res.result).to.deep.equal({ a: 'ax', b: 'bx', c: 'cx' });
+                        expect(res.result).to.equal({ a: 'ax', b: 'bx', c: 'cx' });
 
                         return doneTest();
                     });
@@ -702,7 +702,7 @@ describe('registration and functionality', () => {
                     }, (res) => {
 
                         expect(res.statusCode).to.be.equal(200);
-                        expect(res.result).to.deep.equal({ a: 'a1', b: 'b1', c: 'c1' });
+                        expect(res.result).to.equal({ a: 'a1', b: 'b1', c: 'c1' });
 
                         return doneTest();
                     });
@@ -715,7 +715,7 @@ describe('registration and functionality', () => {
                     }, (res) => {
 
                         expect(res.statusCode).to.be.equal(200);
-                        expect(res.result).to.deep.equal({ a: 'a2', b: 'b2' });
+                        expect(res.result).to.equal({ a: 'a2', b: 'b2' });
 
                         return doneTest();
                     });
@@ -729,7 +729,7 @@ describe('registration and functionality', () => {
                     }, (res) => {
 
                         expect(res.statusCode).to.be.equal(200);
-                        expect(res.result).to.deep.equal({ a: 'a3', b: 'b3', c: 'c3' });
+                        expect(res.result).to.equal({ a: 'a3', b: 'b3', c: 'c3' });
 
                         return doneTest();
                     });
@@ -764,7 +764,7 @@ describe('registration and functionality', () => {
             }, (res) => {
 
                 expect(res.statusCode).to.be.equal(200);
-                expect(res.result).to.deep.equal({ a: 'aq', b: 'bq', c: 'cq' });
+                expect(res.result).to.equal({ a: 'aq', b: 'bq', c: 'cq' });
 
                 return done();
             });
@@ -808,7 +808,7 @@ describe('registration and functionality', () => {
             }, (res) => {
 
                 expect(res.statusCode).to.be.equal(200);
-                expect(res.result).to.deep.equal({ a: 'aq1', b: 'bq1', c: 'cq1' });
+                expect(res.result).to.equal({ a: 'aq1', b: 'bq1', c: 'cq1' });
 
                 return done();
             });
@@ -838,7 +838,7 @@ describe('registration and functionality', () => {
             }, (res) => {
 
                 expect(res.statusCode).to.be.equal(200);
-                expect(res.result).to.deep.equal({ a: 'am', b: 'bm' });
+                expect(res.result).to.equal({ a: 'am', b: 'bm' });
 
                 return done();
             });
@@ -887,7 +887,7 @@ describe('registration and functionality', () => {
             }, (res) => {
 
                 expect(res.statusCode).to.be.equal(200);
-                expect(res.result).to.deep.equal({ a: 'am1', b: 'bm1' });
+                expect(res.result).to.equal({ a: 'am1', b: 'bm1' });
 
                 return done();
             });
@@ -918,7 +918,7 @@ describe('registration and functionality', () => {
             }, (res) => {
 
                 expect(res.statusCode).to.be.equal(200);
-                expect(res.result).to.deep.equal({ a: 'ap', b: 'bp', c: 'cp' });
+                expect(res.result).to.equal({ a: 'ap', b: 'bp', c: 'cp' });
 
                 return done();
             });
@@ -963,7 +963,7 @@ describe('registration and functionality', () => {
             }, (res) => {
 
                 expect(res.statusCode).to.be.equal(200);
-                expect(res.result).to.deep.equal({ a: 'ap1', b: 'bp1', c: 'cp1' });
+                expect(res.result).to.equal({ a: 'ap1', b: 'bp1', c: 'cp1' });
 
                 return done();
             });
