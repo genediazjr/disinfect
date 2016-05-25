@@ -41,7 +41,7 @@ registrations: [
 ## Options
 
 * **deleteEmpty** - remove empty query or payload keys.
-* **deleteWhitespace** - remove empty query, payload, or params keys.
+* **deleteWhitespace** - remove whitespace query, payload, or params keys.
 * **disinfectQuery** - sanitize query strings.
 * **disinfectParams** - sanitize url params.
 * **disinfectPayload** - sanitize payload.
