@@ -55,7 +55,7 @@ registrations: [
 `disinfectQuery`, `disinfectParams`, and `disinfectPayload` defaults to `false`. If set to true, object will be passed to `caja` first before custom sanitizers.
 
 ```
-dirtyObject ->`Cafa` sanitizer -> `genericSanitizer` -> `query-`, `params-`, or `payload-` sanitizer -> deleteWhitespace -> deleteEmpty -> cleanObject.
+dirtyObject ->`Caja` sanitizer -> `genericSanitizer` -> `query-`, `params-`, or `payload-` sanitizer -> deleteWhitespace -> deleteEmpty -> cleanObject.
 ```
 
 `genericSanitizer`, `querySanitizer`, `paramsSanitizer`, and `payloadSanitizer` should be in the following format:
