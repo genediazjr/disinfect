@@ -2,7 +2,7 @@
   "name": "disinfect",
   "version": "0.1.1",
   "author": "Gene Diaz <genediazjr@gmail.com> (http://genediazjr.com/)",
-  "description": "Request query, payload, and params sanitation",
+  "description": "Request query, payload, and params sanitization",
   "keywords": [
     "hapi",
     "plugin",

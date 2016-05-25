@@ -1,6 +1,6 @@
 # disinfect
 Hapi plugin to that uses Google's [Caja] (https://github.com/google/caja) HTML Sanitizer on route query, payload, and params. 
-Also capable for custom sanitation and per-route configuration.
+Also capable for custom sanitization and per-route configuration.
 
 Can also be used for input formatting using the custom sanitizer option.
 
@@ -45,10 +45,10 @@ registrations: [
 * **disinfectQuery** - sanitize query strings.
 * **disinfectParams** - sanitize url params.
 * **disinfectPayload** - sanitize payload.
-* **genericSanitizer** - custom synchronous function to do the sanitation of query, payload, and params. 
-* **querySanitizer** - custom synchronous function to do the sanitation of query strings.
-* **paramsSanitizer** - custom synchronous function to do the sanitation of url params.
-* **payloadSanitizer** - custom synchronous function to do the sanitation of payload.
+* **genericSanitizer** - custom synchronous function to do the sanitization of query, payload, and params. 
+* **querySanitizer** - custom synchronous function to do the sanitization of query strings.
+* **paramsSanitizer** - custom synchronous function to do the sanitization of url params.
+* **payloadSanitizer** - custom synchronous function to do the sanitization of payload.
 
 `deleteEmpty` and `deleteWhitespace` defaults to `false`.
 
