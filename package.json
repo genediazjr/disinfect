@@ -21,8 +21,8 @@
     "node": ">=4.0.0"
   },
   "scripts": {
-    "test": "jscs ./ && jshint ./ && lab -c -v -L -a code -t 100",
-    "test-cover": "lab -c -v -L -a code -t 100 -r html -o ./coverage.html -L && open ./coverage.html"
+    "test": "lab -v -L -a code -t 100",
+    "test-cover": "lab -v -L -a code -t 100 -r html -o ./coverage.html -L && open ./coverage.html"
   },
   "dependencies": {
     "sanitizer": "0.1.x",
@@ -32,9 +32,7 @@
   },
   "devDependencies": {
     "coveralls": "2.11.x",
-    "jshint": "2.9.x",
     "hapi": "13.4.x",
-    "jscs": "3.0.x",
     "code": "3.0.x",
     "lab": "10.7.x"
   }

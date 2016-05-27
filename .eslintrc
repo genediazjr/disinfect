@@ -1,0 +1,96 @@
+{
+  "parserOptions": {
+    "ecmaVersion": 6
+  },
+  "env": {
+    "node": true,
+    "es6": true
+  },
+  "rules": {
+    "yoda": 2,
+    "curly": 2,
+    "eqeqeq": 2,
+    "new-cap": 2,
+    "eol-last": 2,
+    "wrap-iife": 2,
+    "camelcase": 2,
+    "dot-notation": 2,
+    "guard-for-in": 2,
+    "comma-dangle": 2,
+    "spaced-comment": 2,
+    "keyword-spacing": 2,
+    "space-infix-ops": 2,
+    "space-in-parens": 2,
+    "array-bracket-spacing": 2,
+    "no-var": 2,
+    "no-new": 2,
+    "no-with": 2,
+    "no-undef": 2,
+    "no-caller": 2,
+    "no-unused-vars": 2,
+    "no-trailing-spaces": 2,
+    "no-mixed-spaces-and-tabs": 2,
+    "no-implicit-coercion": [
+      2,
+      {
+        "number": true,
+        "boolean": true,
+        "string": true
+      }
+    ],
+    "no-underscore-dangle": [
+      2,
+      {
+        "allowAfterThis": true,
+        "allow": [
+          "_disinfect"
+        ]
+      }
+    ],
+    "space-before-function-paren": [
+      2,
+      {
+        "anonymous": "always",
+        "named": "never"
+      }
+    ],
+    "space-unary-ops": [
+      2,
+      {
+        "nonwords": false,
+        "overrides": {}
+      }
+    ],
+    "key-spacing": [
+      2,
+      {
+        "beforeColon": false,
+        "afterColon": true
+      }
+    ],
+    "space-before-blocks": [
+      2,
+      "always"
+    ],
+    "indent": [
+      2,
+      4,
+      {
+        "SwitchCase": 2
+      }
+    ],
+    "quote-props": [
+      2,
+      "as-needed"
+    ],
+    "quotes": [
+      2,
+      "single"
+    ],
+    "strict": [
+      "error",
+      "global"
+    ]
+  },
+  "globals": {}
+}
