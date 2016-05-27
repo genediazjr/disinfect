@@ -111,7 +111,7 @@ describe('registration and functionality', () => {
 
             expect(err).to.not.exist();
 
-            Async.parallel([
+            Async.series([
                 (doneTest) => {
 
                     server.inject({
@@ -184,7 +184,7 @@ describe('registration and functionality', () => {
                 }
             });
 
-            Async.parallel([
+            Async.series([
                 (doneTest) => {
 
                     server.inject({
@@ -227,7 +227,7 @@ describe('registration and functionality', () => {
 
             expect(err).to.not.exist();
 
-            Async.parallel([
+            Async.series([
                 (doneTest) => {
 
                     server.inject({
@@ -329,7 +329,7 @@ describe('registration and functionality', () => {
                 }
             });
 
-            Async.parallel([
+            Async.series([
                 (doneTest) => {
 
                     server.inject({
@@ -564,7 +564,7 @@ describe('registration and functionality', () => {
 
             expect(err).to.not.exist();
 
-            Async.parallel([
+            Async.series([
                 (doneTest) => {
 
                     server.inject({
@@ -693,7 +693,7 @@ describe('registration and functionality', () => {
                 }
             });
 
-            Async.parallel([
+            Async.series([
                 (doneTest) => {
 
                     server.inject({
