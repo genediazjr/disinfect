@@ -32,6 +32,7 @@
     "spaced-comment": 2,
     "callback-return": 2,
     "keyword-spacing": 2,
+    "space-unary-ops": 2,
     "space-infix-ops": 2,
     "space-in-parens": 2,
     "block-scoped-var": 2,
@@ -139,13 +140,6 @@
         "named": "never"
       }
     ],
-    "space-unary-ops": [
-      2,
-      {
-        "nonwords": false,
-        "overrides": {}
-      }
-    ],
     "operator-linebreak": [
       2,
       "before"
@@ -171,7 +165,7 @@
       "never"
     ],
     "strict": [
-      "error",
+      2,
       "global"
     ]
   },
