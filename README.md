@@ -1,5 +1,5 @@
 # disinfect
-Hapi plugin to that uses Google's [Caja] (https://github.com/google/caja) HTML Sanitizer on route query, payload, and params. 
+Hapi plugin to that uses Google's [Caja](https://github.com/google/caja) HTML Sanitizer on route query, payload, and params. 
 Also capable for custom sanitization and per-route configuration.
 
 Can also be used for input formatting using the custom sanitizer option.
@@ -24,7 +24,7 @@ server.register({
     ...
 });
 ```
-[Glue] (https://github.com/hapijs/glue) manifest
+[Glue](https://github.com/hapijs/glue) manifest
 ```js
 registrations: [
     {
@@ -67,7 +67,7 @@ const customSanitizer = (dirtyObj) => {
 }
 ```
 
-All options can be passed on a per-[route] (http://hapijs.com/api#route-options) basis. Route options overrides server options.
+All options can be passed on a per-[route](http://hapijs.com/api#route-options) basis. Route options overrides server options.
 
 ```js
 // example
@@ -91,9 +91,9 @@ All options can be passed on a per-[route] (http://hapijs.com/api#route-options)
 
 ## Contributing
 * Include 100% test coverage
-* Follow the [Hapi coding conventions] (http://hapijs.com/styleguide)
+* Follow the [Hapi coding conventions](http://hapijs.com/styleguide)
 * Submit an issue first for significant changes.
 
 ## Credits
-* [hapi-sanitize-payload] (https://github.com/lob/hapi-sanitize-payload) - Hapi plugin to sanitize the request payload
-* [Caja-HTML-Sanitizer] (https://github.com/theSmaw/Caja-HTML-Sanitizer) - Bundles Google Caja's HTML Sanitizer within a npm installable node.js module
+* [hapi-sanitize-payload](https://github.com/lob/hapi-sanitize-payload) - Hapi plugin to sanitize the request payload
+* [Caja-HTML-Sanitizer](https://github.com/theSmaw/Caja-HTML-Sanitizer) - Bundles Google Caja's HTML Sanitizer within a npm installable node.js module
