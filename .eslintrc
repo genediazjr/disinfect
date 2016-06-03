@@ -25,7 +25,10 @@
     "guard-for-in": 2,
     "valid-typeof": 2,
     "comma-dangle": 2,
+    "arrow-parens": 2,
+    "prefer-const": 2,
     "default-case": 2,
+    "arrow-spacing": 2,
     "comma-spacing": 2,
     "block-spacing": 2,
     "global-require": 0,
@@ -36,11 +39,14 @@
     "space-infix-ops": 2,
     "space-in-parens": 2,
     "block-scoped-var": 2,
+    "prefer-rest-params": 1,
     "space-before-blocks": 2,
     "handle-callback-err": 2,
     "max-nested-callbacks": 2,
     "array-bracket-spacing": 2,
     "array-callback-return": 2,
+    "prefer-arrow-callback": 1,
+    "generator-star-spacing": 2,
     "computed-property-spacing": 2,
     "no-var": 2,
     "no-new": 2,
@@ -71,6 +77,7 @@
     "no-obj-calls": 2,
     "no-ex-assign": 2,
     "no-new-object": 2,
+    "no-new-symbol": 2,
     "no-extra-semi": 2,
     "no-delete-var": 2,
     "no-script-url": 2,
@@ -87,7 +94,8 @@
     "no-self-compare": 2,
     "no-multi-spaces": 2,
     "no-regex-spaces": 2,
-    "no-invalid-this": 2,
+    "no-class-assign": 2,
+    "no-const-assign": 2,
     "no-implied-eval": 2,
     "no-useless-call": 2,
     "no-octal-escape": 2,
@@ -103,17 +111,22 @@
     "no-duplicate-case": 2,
     "no-trailing-spaces": 2,
     "no-inline-comments": 2,
+    "no-confusing-arrow": 2,
     "no-unneeded-ternary": 2,
     "no-floating-decimal": 2,
     "no-implicit-coercion": 2,
+    "no-duplicate-imports": 2,
     "no-case-declarations": 2,
+    "no-this-before-super": 2,
     "no-use-before-define": 2,
     "no-constant-condition": 2,
     "no-unused-expressions": 2,
     "no-inner-declarations": 2,
     "no-extra-boolean-cast": 2,
+    "no-dupe-class-members": 2,
     "no-unexpected-multiline": 2,
     "no-irregular-whitespace": 2,
+    "no-useless-computed-key": 2,
     "no-empty-character-class": 2,
     "no-mixed-spaces-and-tabs": 2,
     "no-unmodified-loop-condition": 2,
@@ -125,6 +138,13 @@
         "maxEOF": 1
       }
     ],
+    "space-before-function-paren": [
+      2,
+      {
+        "anonymous": "always",
+        "named": "never"
+      }
+    ],
     "no-underscore-dangle": [
       2,
       {
@@ -133,16 +153,13 @@
         ]
       }
     ],
-    "space-before-function-paren": [
-      2,
-      {
-        "anonymous": "always",
-        "named": "never"
-      }
-    ],
     "operator-linebreak": [
       2,
       "before"
+    ],
+    "arrow-body-style": [
+      2,
+      "always"
     ],
     "dot-location": [
       2,
