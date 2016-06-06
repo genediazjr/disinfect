@@ -1,4 +1,3 @@
-/* jshint -W079 */
 'use strict';
 
 const Async = require('async');
