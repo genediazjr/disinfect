@@ -1,8 +1,9 @@
 # disinfect
 Hapi plugin to apply Google's [Caja](https://github.com/google/caja) HTML Sanitizer on route query, payload, and params.
 
-* Capable for custom sanitization and per-route configuration. 
-* Can also be used for input formatting using the custom sanitizer option. 
+* Capable for custom sanitization and per-route configuration.
+* Can also be used for input formatting using the custom sanitizer option.
+* Can be disabled per route.
 
 [![npm version](https://badge.fury.io/js/disinfect.svg)](https://badge.fury.io/js/disinfect)
 [![Dependency Status](https://david-dm.org/genediazjr/disinfect.svg)](https://david-dm.org/genediazjr/disinfect)
@@ -85,6 +86,22 @@ All options can be passed on a per-[route](http://hapijs.com/api#route-options) 
                 disinfectPayload: true
             } 
         } 
+    }
+}
+```
+
+Disable on a route.
+```js
+{
+    path: '/',
+    method: 'get',
+    handler: (request, reply) => {
+        ...
+    },
+    config: {
+        plugins: {
+            disinfect: false
+        }
     }
 }
 ```

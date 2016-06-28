@@ -102,6 +102,69 @@ describe('registration and functionality', () => {
         });
     });
 
+    it('can be disabled per route', (done) => {
+
+        register({
+            deleteEmpty: true
+        }, (err) => {
+
+            expect(err).to.not.exist();
+
+            server.route({
+                method: 'get',
+                path: '/disabled',
+                handler: (request, reply) => {
+
+                    return reply(request.query);
+                },
+                config: { plugins: { disinfect: false } }
+            });
+
+            server.route({
+                method: 'post',
+                path: '/disabled',
+                handler: (request, reply) => {
+
+                    return reply(request.payload);
+                },
+                config: { plugins: { disinfect: false } }
+            });
+
+            Async.series([
+                (doneTest) => {
+
+                    server.inject({
+                        method: 'get',
+                        url: '/disabled?a=&b=&c=c'
+                    }, (res) => {
+
+                        expect(res.statusCode).to.be.equal(200);
+                        expect(res.result).to.equal({ a: '', b: '', c: 'c' });
+
+                        return doneTest();
+                    });
+                },
+                (doneTest) => {
+
+                    server.inject({
+                        method: 'post',
+                        url: '/disabled',
+                        payload: { a: '', b: '', c: 'c' }
+                    }, (res) => {
+
+                        expect(res.statusCode).to.be.equal(200);
+                        expect(res.result).to.equal({ a: '', b: '', c: 'c' });
+
+                        return doneTest();
+                    });
+                }
+            ], () => {
+
+                return done();
+            });
+        });
+    });
+
     it('removes empties', (done) => {
 
         register({
