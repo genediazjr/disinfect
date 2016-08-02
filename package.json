@@ -1,6 +1,6 @@
 {
   "name": "disinfect",
-  "version": "0.2.0",
+  "version": "0.2.1",
   "author": "Gene Diaz <genediazjr@gmail.com> (http://genediazjr.com/)",
   "description": "Request query, payload, and params sanitization",
   "keywords": [
@@ -26,14 +26,14 @@
   },
   "dependencies": {
     "sanitizer": "0.1.x",
-    "async": "1.5.x",
+    "async": "2.0.x",
     "hoek": "4.0.x",
-    "joi": "8.4.x"
+    "joi": "9.0.x"
   },
   "devDependencies": {
     "coveralls": "2.11.x",
-    "hapi": "13.4.x",
+    "hapi": "14.1.x",
     "code": "3.0.x",
-    "lab": "10.7.x"
+    "lab": "10.9.x"
   }
 }
