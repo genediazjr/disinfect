@@ -32,8 +32,8 @@
   },
   "devDependencies": {
     "coveralls": "2.11.x",
-    "hapi": "14.1.x",
+    "hapi": "15.0.x",
     "code": "3.0.x",
-    "lab": "10.9.x"
+    "lab": "11.0.x"
   }
 }
