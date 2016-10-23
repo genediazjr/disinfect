@@ -2,8 +2,8 @@
 [![Build Status](https://travis-ci.org/genediazjr/disinfect.svg?branch=master)](https://travis-ci.org/genediazjr/disinfect)
 [![Coverage Status](https://coveralls.io/repos/github/genediazjr/disinfect/badge.svg?branch=master)](https://coveralls.io/github/genediazjr/disinfect?branch=master)
 [![Code Climate](https://codeclimate.com/github/genediazjr/disinfect/badges/gpa.svg)](https://codeclimate.com/github/genediazjr/disinfect)
-[![NPM Downloads](https://img.shields.io/npm/dt/disinfect.svg?maxAge=2592000)](https://www.npmjs.com/disinfect)
 [![NPM Version](https://badge.fury.io/js/disinfect.svg)](https://www.npmjs.com/disinfect)
+[![NPM Downloads](https://img.shields.io/npm/dt/disinfect.svg?maxAge=2592000)](https://www.npmjs.com/disinfect)<br>
 [![Dependency Status](https://david-dm.org/genediazjr/disinfect.svg)](https://david-dm.org/genediazjr/disinfect)
 [![Known Vulnerabilities](https://snyk.io/test/github/genediazjr/disinfect/badge.svg)](https://snyk.io/test/github/genediazjr/disinfect)
 [![NSP Status](https://nodesecurity.io/orgs/genediazjr/projects/57a4e17d-bf27-4150-b763-3c92b244d2c5/badge)](https://nodesecurity.io/orgs/genediazjr/projects/57a4e17d-bf27-4150-b763-3c92b244d2c5)
