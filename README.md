@@ -17,29 +17,40 @@ Hapi plugin to apply Google's [Caja](https://github.com/google/caja) HTML Saniti
 ## Usage
 
 ```js
-server.register({
-    register: require('disinfect'),
-    options: {
-        disinfectQuery: true,
-        disinfectParams: true,
-        disinfectPayload: true
-    }
-}, (err) => {
-    ...
-});
+const registerPlugins = async (server) => Promise.all([
+    server.register({
+        plugin: require('disinfect'),
+        options: {
+            disinfectQuery: true,
+            disinfectParams: true,
+            disinfectPayload: true
+        }
+    })
+]);
+
+registerPlugins(server)
+    .then(() => {
+        // ...
+    })
+    .catch((err) => {
+        // ...
+    })
+
 ```
 [Glue](https://github.com/hapijs/glue) manifest
 ```js
-registrations: [
-    {
-        plugin: {
-            register: 'disinfect',
-            options: [
-                ...
-            ]
+register: {
+    plugins: [
+        {
+            plugin: require('disinfect'),
+            options: {
+                disinfectQuery: true,
+                disinfectParams: true,
+                disinfectPayload: true
+            }
         }
-    }
-]
+    ]
+}
 ```
 
 ## Options
@@ -66,7 +77,7 @@ dirtyObject ->`Caja` sanitizer -> `genericSanitizer` -> `query-`, `params-`, or 
 
 ```js
 const customSanitizer = (dirtyObj) => {
-    ...
+    // ...
     return cleanObj;
 }
 ```
@@ -81,7 +92,7 @@ All options can be passed on a per-[route](http://hapijs.com/api#route-options) 
     handler: (request, reply) => {
         ...
     },
-    config: {
+    options: {
         plugins: {
             disinfect: {
                 disinfectQuery: true,
@@ -101,7 +112,7 @@ Disable on a route.
     handler: (request, reply) => {
         ...
     },
-    config: {
+    options: {
         plugins: {
             disinfect: false
         }

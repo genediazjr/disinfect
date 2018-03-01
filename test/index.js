@@ -1,6 +1,5 @@
 'use strict';
 
-const Async = require('async');
 const Hapi = require('hapi');
 const Code = require('code');
 const Lab = require('lab');
@@ -16,678 +15,659 @@ describe('registration and functionality', () => {
 
     let server;
 
-    beforeEach((done) => {
+    beforeEach(async () => {
 
-        server = new Hapi.Server();
-        server.connection();
+        server = new Hapi.Server({port: 80});
 
-        server.route({
+        await server.route([{
             method: 'get',
             path: '/queryTest',
-            handler: (request, reply) => {
-
-                return reply(request.query);
+            handler: (request) => {
+                return request.query;
             }
-        });
-
-        server.route({
+        }, {
             method: 'get',
             path: '/paramsTest/{a}/{b?}',
-            handler: (request, reply) => {
-
-                return reply(request.params);
+            handler: (request) => {
+                return request.params;
             }
-        });
-
-        server.route({
+        }, {
             method: 'post',
             path: '/payloadTest',
-            handler: (request, reply) => {
-
-                return reply(request.payload);
+            handler: (request) => {
+                return request.payload;
             }
-        });
-
-        return done();
+        }]);
     });
 
-    const register = (options, next) => {
-
-        server.register({
-            register: Plugin,
-            options: options
-        }, (err) => {
-
-            return next(err);
-        });
+    const register = async (options) => {
+        return server.register({plugin: Plugin, options});
     };
 
-    it('registers without options', (done) => {
+    it('registers without options', async () => {
 
-        register({}, (err) => {
+        let err;
 
-            expect(err).to.not.exist();
+        try {
+            await register({});
 
-            server.route({
+            await server.route([{
                 method: 'get',
                 path: '/',
-                handler: (request, reply) => {
-
-                    return reply('');
+                handler: () => {
+                    return '';
                 }
-            });
+            }]);
 
-            server.inject({
-                method: 'get',
-                url: '/'
-            }, (res) => {
+            await Promise.all([
+                server.inject({
+                    method: 'get',
+                    url: '/'
+                }).then((res) => {
 
-                expect(res.statusCode).to.be.equal(200);
-                expect(res.result).to.equal(null);
+                    expect(res.statusCode).to.be.equal(200);
+                    expect(res.result).to.equal('');
+                })
+            ]);
+        }
 
-                return done();
-            });
-        });
+        catch (error) {
+            err = error;
+        }
+
+        expect(err).to.not.exist();
     });
 
-    it('registers with error if invalid options', (done) => {
+    it('registers with error if invalid options', async () => {
 
-        register({
-            some: 'value'
-        }, (err) => {
+        let err;
 
-            expect(err).to.exist();
+        try {
+            await register({
+                some: 'value'
+            });
+        }
 
-            return done();
-        });
+        catch (error) {
+            err = error;
+        }
+
+        expect(err).to.exist();
     });
 
-    it('can be disabled per route', (done) => {
+    it('can be disabled per route', async () => {
 
-        register({
-            deleteEmpty: true
-        }, (err) => {
+        let err;
 
-            expect(err).to.not.exist();
+        try {
+            await register({
+                deleteEmpty: true
+            });
 
-            server.route({
+            await server.route([{
                 method: 'get',
                 path: '/disabled',
-                handler: (request, reply) => {
-
-                    return reply(request.query);
+                handler: (request) => {
+                    return request.query;
                 },
-                config: { plugins: { disinfect: false } }
-            });
-
-            server.route({
+                options: {plugins: {disinfect: false}}
+            }, {
                 method: 'post',
                 path: '/disabled',
-                handler: (request, reply) => {
-
-                    return reply(request.payload);
+                handler: (request) => {
+                    return request.payload;
                 },
-                config: { plugins: { disinfect: false } }
-            });
+                options: {plugins: {disinfect: false}}
+            }]);
 
-            Async.series([
-                (doneTest) => {
+            await Promise.all([
+                server.inject({
+                    method: 'get',
+                    url: '/disabled?a=&b=&c=c'
+                }).then((res) => {
+                    expect(res.statusCode).to.be.equal(200);
+                    expect(res.result).to.equal({a: '', b: '', c: 'c'});
+                }),
 
-                    server.inject({
-                        method: 'get',
-                        url: '/disabled?a=&b=&c=c'
-                    }, (res) => {
+                server.inject({
+                    method: 'post',
+                    url: '/disabled',
+                    payload: {a: '', b: '', c: 'c'}
+                }).then((res) => {
 
-                        expect(res.statusCode).to.be.equal(200);
-                        expect(res.result).to.equal({ a: '', b: '', c: 'c' });
+                    expect(res.statusCode).to.be.equal(200);
+                    expect(res.result).to.equal({a: '', b: '', c: 'c'});
+                })
+            ]);
+        }
 
-                        return doneTest();
-                    });
-                },
-                (doneTest) => {
+        catch (error) {
+            err = error;
+        }
 
-                    server.inject({
-                        method: 'post',
-                        url: '/disabled',
-                        payload: { a: '', b: '', c: 'c' }
-                    }, (res) => {
-
-                        expect(res.statusCode).to.be.equal(200);
-                        expect(res.result).to.equal({ a: '', b: '', c: 'c' });
-
-                        return doneTest();
-                    });
-                }
-            ], () => {
-
-                return done();
-            });
-        });
+        expect(err).to.not.exist();
     });
 
-    it('removes empties', (done) => {
+    it('removes empties', async () => {
 
-        register({
-            deleteEmpty: true
-        }, (err) => {
+        let err;
 
-            expect(err).to.not.exist();
-
-            Async.series([
-                (doneTest) => {
-
-                    server.inject({
-                        method: 'get',
-                        url: '/queryTest?a=&b=&c=c'
-                    }, (res) => {
-
-                        expect(res.statusCode).to.be.equal(200);
-                        expect(res.result).to.equal({ c: 'c' });
-
-                        return doneTest();
-                    });
-                },
-                (doneTest) => {
-
-                    server.inject({
-                        method: 'post',
-                        url: '/payloadTest',
-                        payload: { a: '', b: '', c: 'c' }
-                    }, (res) => {
-
-                        expect(res.statusCode).to.be.equal(200);
-                        expect(res.result).to.equal({ c: 'c' });
-
-                        return doneTest();
-                    });
-                }
-            ], () => {
-
-                return done();
+        try {
+            await register({
+                deleteEmpty: true
             });
-        });
+
+            await Promise.all([
+                server.inject({
+                    method: 'get',
+                    url: '/queryTest?a=&b=&c=c'
+                }).then((res) => {
+
+                    expect(res.statusCode).to.be.equal(200);
+                    expect(res.result).to.equal({c: 'c'});
+                }),
+
+                server.inject({
+                    method: 'post',
+                    url: '/payloadTest',
+                    payload: {a: '', b: '', c: 'c'}
+                }).then((res) => {
+
+                    expect(res.statusCode).to.be.equal(200);
+                    expect(res.result).to.equal({c: 'c'});
+                })
+            ]);
+        }
+
+        catch (error) {
+            err = error;
+        }
+
+        expect(err).to.not.exist();
     });
 
-    it('removes empties on a per route config', (done) => {
+    it('removes empties on a per route options', async () => {
 
-        register({}, (err) => {
+        let err;
 
-            expect(err).to.not.exist();
+        try {
+            await register({
+                deleteEmpty: true
+            });
 
-            server.route({
+            await server.route([{
                 method: 'get',
                 path: '/queryTestPerRoute',
-                handler: (request, reply) => {
-
-                    return reply(request.query);
+                handler: (request) => {
+                    return request.query;
                 },
-                config: {
+                options: {
                     plugins: {
                         disinfect: {
                             deleteEmpty: true
                         }
                     }
                 }
-            });
-
-            server.route({
+            }, {
                 method: 'post',
                 path: '/payloadTestPerRoute',
-                handler: (request, reply) => {
-
-                    return reply(request.payload);
+                handler: (request) => {
+                    return request.payload;
                 },
-                config: {
+                options: {
                     plugins: {
                         disinfect: {
                             deleteEmpty: true
                         }
                     }
                 }
-            });
+            }]);
 
-            Async.series([
-                (doneTest) => {
+            await Promise.all([
+                server.inject({
+                    method: 'get',
+                    url: '/queryTestPerRoute?a=&b=&c=c'
+                }).then((res) => {
 
-                    server.inject({
-                        method: 'get',
-                        url: '/queryTestPerRoute?a=&b=&c=c'
-                    }, (res) => {
+                    expect(res.statusCode).to.be.equal(200);
+                    expect(res.result).to.equal({c: 'c'});
+                }),
 
-                        expect(res.statusCode).to.be.equal(200);
-                        expect(res.result).to.equal({ c: 'c' });
+                server.inject({
+                    method: 'post',
+                    url: '/payloadTestPerRoute',
+                    payload: {a: '', b: '', c: 'c'}
+                }).then((res) => {
 
-                        return doneTest();
-                    });
-                },
-                (doneTest) => {
+                    expect(res.statusCode).to.be.equal(200);
+                    expect(res.result).to.equal({c: 'c'});
+                })
+            ]);
+        }
 
-                    server.inject({
-                        method: 'post',
-                        url: '/payloadTestPerRoute',
-                        payload: { a: '', b: '', c: 'c' }
-                    }, (res) => {
+        catch (error) {
+            err = error;
+        }
 
-                        expect(res.statusCode).to.be.equal(200);
-                        expect(res.result).to.equal({ c: 'c' });
-
-                        return doneTest();
-                    });
-                }
-            ], () => {
-
-                return done();
-            });
-        });
+        expect(err).to.not.exist();
     });
 
-    it('removes whitespaces', (done) => {
+    it('removes whitespaces', async () => {
 
-        register({
-            deleteWhitespace: true
-        }, (err) => {
+        let err;
 
-            expect(err).to.not.exist();
-
-            Async.series([
-                (doneTest) => {
-
-                    server.inject({
-                        method: 'get',
-                        url: '/queryTest?a=%20%20%20&b=%20%20%20&c=c'
-                    }, (res) => {
-
-                        expect(res.statusCode).to.be.equal(200);
-                        expect(res.result).to.equal({ c: 'c' });
-
-                        return doneTest();
-                    });
-                },
-                (doneTest) => {
-
-                    server.inject({
-                        method: 'get',
-                        url: '/paramsTest/' + encodeURIComponent('      ') + '/5'
-                    }, (res) => {
-
-                        expect(res.statusCode).to.be.equal(200);
-                        expect(res.result).to.equal({ b: '5' });
-
-                        return doneTest();
-                    });
-                },
-                (doneTest) => {
-
-                    server.inject({
-                        method: 'post',
-                        url: '/payloadTest',
-                        payload: { a: '      ', b: '       ', c: 'c' }
-                    }, (res) => {
-
-                        expect(res.statusCode).to.be.equal(200);
-                        expect(res.result).to.equal({ c: 'c' });
-
-                        return doneTest();
-                    });
-                }
-            ], () => {
-
-                return done();
+        try {
+            await register({
+                deleteWhitespace: true
             });
-        });
+
+            await Promise.all([
+                server.inject({
+                    method: 'get',
+                    url: '/queryTest?a=%20%20%20&b=%20%20%20&c=c'
+                }).then((res) => {
+
+                    expect(res.statusCode).to.be.equal(200);
+                    expect(res.result).to.equal({c: 'c'});
+                }),
+
+                server.inject({
+                    method: 'get',
+                    url: '/paramsTest/' + encodeURIComponent('      ') + '/5'
+                }).then((res) => {
+
+                    expect(res.statusCode).to.be.equal(200);
+                    expect(res.result).to.equal({b: '5'});
+                }),
+
+                server.inject({
+                    method: 'post',
+                    url: '/payloadTest',
+                    payload: {a: '      ', b: '       ', c: 'c'}
+                }).then((res) => {
+
+                    expect(res.statusCode).to.be.equal(200);
+                    expect(res.result).to.equal({c: 'c'});
+                })
+            ]);
+        }
+
+        catch (error) {
+            err = error;
+        }
+
+        expect(err).to.not.exist();
     });
 
-    it('removes whitespaces on a per route config', (done) => {
+    it('removes whitespaces on a per route options', async () => {
 
-        register({}, (err) => {
+        let err;
 
-            expect(err).to.not.exist();
-
-            server.route({
+        try {
+            await register({
+                deleteEmpty: true
+            });
+            await server.route([{
                 method: 'get',
                 path: '/queryTestPerRoute',
-                handler: (request, reply) => {
-
-                    return reply(request.query);
+                handler: (request) => {
+                    return request.query;
                 },
-                config: {
+                options: {
                     plugins: {
                         disinfect: {
                             deleteWhitespace: true
                         }
                     }
                 }
-            });
-
-            server.route({
+            }, {
                 method: 'get',
                 path: '/paramsTestPerRoute/{a}/{b?}',
-                handler: (request, reply) => {
-
-                    return reply(request.params);
+                handler: (request) => {
+                    return request.params;
                 },
-                config: {
+                options: {
                     plugins: {
                         disinfect: {
                             deleteWhitespace: true
                         }
                     }
                 }
-            });
-
-            server.route({
+            }, {
                 method: 'post',
                 path: '/payloadTestPerRoute',
-                handler: (request, reply) => {
-
-                    return reply(request.payload);
+                handler: (request) => {
+                    return request.payload;
                 },
-                config: {
+                options: {
                     plugins: {
                         disinfect: {
                             deleteWhitespace: true
                         }
                     }
                 }
-            });
+            }]);
 
-            Async.series([
-                (doneTest) => {
+            await Promise.all([
+                server.inject({
+                    method: 'get',
+                    url: '/queryTestPerRoute?a=%20%20%20&b=%20%20%20&c=c'
+                }).then((res) => {
 
-                    server.inject({
-                        method: 'get',
-                        url: '/queryTestPerRoute?a=%20%20%20&b=%20%20%20&c=c'
-                    }, (res) => {
+                    expect(res.statusCode).to.be.equal(200);
+                    expect(res.result).to.equal({c: 'c'});
+                }),
 
-                        expect(res.statusCode).to.be.equal(200);
-                        expect(res.result).to.equal({ c: 'c' });
+                server.inject({
+                    method: 'get',
+                    url: '/paramsTestPerRoute/' + encodeURIComponent('      ') + '/c'
+                }).then((res) => {
 
-                        return doneTest();
-                    });
-                },
-                (doneTest) => {
+                    expect(res.statusCode).to.be.equal(200);
+                    expect(res.result).to.equal({b: 'c'});
+                }),
 
-                    server.inject({
-                        method: 'get',
-                        url: '/paramsTestPerRoute/' + encodeURIComponent('      ') + '/c'
-                    }, (res) => {
+                server.inject({
+                    method: 'post',
+                    url: '/payloadTestPerRoute',
+                    payload: {a: '      ', b: '       ', c: 'c'}
+                }).then((res) => {
 
-                        expect(res.statusCode).to.be.equal(200);
-                        expect(res.result).to.equal({ b: 'c' });
+                    expect(res.statusCode).to.be.equal(200);
+                    expect(res.result).to.equal({c: 'c'});
+                })
+            ]);
+        }
 
-                        return doneTest();
-                    });
-                },
-                (doneTest) => {
+        catch (error) {
+            err = error;
+        }
 
-                    server.inject({
-                        method: 'post',
-                        url: '/payloadTestPerRoute',
-                        payload: { a: '      ', b: '       ', c: 'c' }
-                    }, (res) => {
-
-                        expect(res.statusCode).to.be.equal(200);
-                        expect(res.result).to.equal({ c: 'c' });
-
-                        return doneTest();
-                    });
-                }
-            ], () => {
-
-                return done();
-            });
-        });
+        expect(err).to.not.exist();
     });
 
-    it('sanitizes query', (done) => {
+    it('sanitizes query', async () => {
 
-        register({
-            disinfectQuery: true
-        }, (err) => {
+        let err;
 
-            expect(err).to.not.exist();
-
-            server.inject({
-                method: 'get',
-                url: '/queryTest?a=' + encodeURIComponent('<b>hello <i>world</i><script src=foo.js></script></b>')
-            }, (res) => {
-
-                expect(res.statusCode).to.be.equal(200);
-                expect(res.result).to.equal({ a: '<b>hello <i>world</i></b>' });
-
-                return done();
+        try {
+            await register({
+                disinfectQuery: true
             });
-        });
+
+            await Promise.all([
+                server.inject({
+                    method: 'get',
+                    url: '/queryTest?a=' + encodeURIComponent('<b>hello <i>world</i><script src=foo.js></script></b>')
+                }).then((res) => {
+
+                    expect(res.statusCode).to.be.equal(200);
+                    expect(res.result).to.equal({a: '<b>hello <i>world</i></b>'});
+                })
+            ]);
+        }
+
+        catch (error) {
+            err = error;
+        }
+
+        expect(err).to.not.exist();
     });
 
-    it('sanitizes query on a per route config', (done) => {
+    it('sanitizes query on a per route options', async () => {
 
-        register({}, (err) => {
+        let err;
 
-            expect(err).to.not.exist();
+        try {
+            await register({});
 
-            server.route({
+            await server.route([{
                 method: 'get',
                 path: '/queryTestPerRoute',
-                handler: (request, reply) => {
-
-                    return reply(request.query);
+                handler: (request) => {
+                    return request.query;
                 },
-                config: {
+                options: {
                     plugins: {
                         disinfect: {
                             disinfectQuery: true
                         }
                     }
                 }
-            });
+            }]);
 
-            server.inject({
-                method: 'get',
-                url: '/queryTestPerRoute?a=' + encodeURIComponent('<b>hello <i>world</i><script src=foo.js></script></b>')
-            }, (res) => {
+            await Promise.all([
+                server.inject({
+                    method: 'get',
+                    url: '/queryTestPerRoute?a=' + encodeURIComponent('<b>hello <i>world</i><script src=foo.js></script></b>')
+                }).then((res) => {
 
-                expect(res.statusCode).to.be.equal(200);
-                expect(res.result).to.equal({ a: '<b>hello <i>world</i></b>' });
+                    expect(res.statusCode).to.be.equal(200);
+                    expect(res.result).to.equal({a: '<b>hello <i>world</i></b>'});
 
-                return done();
-            });
-        });
+                })
+            ]);
+        }
+
+        catch (error) {
+            err = error;
+        }
+
+        expect(err).to.not.exist();
     });
 
-    it('sanitizes params', (done) => {
+    it('sanitizes params', async () => {
 
-        register({
-            disinfectParams: true
-        }, (err) => {
+        let err;
 
-            expect(err).to.not.exist();
-
-            server.inject({
-                method: 'get',
-                url: '/paramsTest/' + encodeURIComponent('<b>hello <i>world</i><script src=foo.js></script></b>')
-            }, (res) => {
-
-                expect(res.statusCode).to.be.equal(200);
-                expect(res.result).to.equal({ a: '<b>hello <i>world</i></b>' });
-
-                return done();
+        try {
+            await register({
+                disinfectParams: true
             });
-        });
+
+            await Promise.all([
+                server.inject({
+                    method: 'get',
+                    url: '/paramsTest/' + encodeURIComponent('<b>hello <i>world</i><script src=foo.js></script></b>')
+                }).then((res) => {
+
+                    expect(res.statusCode).to.be.equal(200);
+                    expect(res.result).to.equal({a: '<b>hello <i>world</i></b>'});
+                })
+            ]);
+        }
+
+        catch (error) {
+            err = error;
+        }
+
+        expect(err).to.not.exist();
     });
 
-    it('sanitizes params on a per route config', (done) => {
+    it('sanitizes params on a per route options', async () => {
 
-        register({}, (err) => {
+        let err;
 
-            expect(err).to.not.exist();
+        try {
+            await register({
+                deleteEmpty: true
+            });
 
-            server.route({
+            await server.route([{
                 method: 'get',
                 path: '/paramsTestPerRoute/{a}/{b?}',
-                handler: (request, reply) => {
-
-                    return reply(request.params);
+                handler: (request) => {
+                    return request.params;
                 },
-                config: {
+                options: {
                     plugins: {
                         disinfect: {
                             disinfectParams: true
                         }
                     }
                 }
-            });
+            }]);
 
-            server.inject({
-                method: 'get',
-                url: '/paramsTestPerRoute/' + encodeURIComponent('<b>hello <i>world</i><script src=foo.js></script></b>')
-            }, (res) => {
+            await Promise.all([
+                server.inject({
+                    method: 'get',
+                    url: '/paramsTestPerRoute/' + encodeURIComponent('<b>hello <i>world</i><script src=foo.js></script></b>')
+                }).then((res) => {
 
-                expect(res.statusCode).to.be.equal(200);
-                expect(res.result).to.equal({ a: '<b>hello <i>world</i></b>' });
+                    expect(res.statusCode).to.be.equal(200);
+                    expect(res.result).to.equal({a: '<b>hello <i>world</i></b>'});
+                })
+            ]);
+        }
 
-                return done();
-            });
-        });
+        catch (error) {
+            err = error;
+        }
+
+        expect(err).to.not.exist();
     });
 
-    it('sanitizes payload', (done) => {
+    it('sanitizes payload', async () => {
 
-        register({
-            disinfectPayload: true
-        }, (err) => {
+        let err;
 
-            expect(err).to.not.exist();
-
-            server.inject({
-                method: 'post',
-                url: '/payloadTest',
-                payload: { a: '<b>hello <i>world</i><script src=foo.js></script></b>' }
-            }, (res) => {
-
-                expect(res.statusCode).to.be.equal(200);
-                expect(res.result).to.equal({ a: '<b>hello <i>world</i></b>' });
-
-                return done();
+        try {
+            await register({
+                disinfectPayload: true
             });
-        });
+
+            await Promise.all([
+                server.inject({
+                    method: 'post',
+                    url: '/payloadTest',
+                    payload: {a: '<b>hello <i>world</i><script src=foo.js></script></b>'}
+                }).then((res) => {
+
+                    expect(res.statusCode).to.be.equal(200);
+                    expect(res.result).to.equal({a: '<b>hello <i>world</i></b>'});
+                })
+            ]);
+        }
+
+        catch (error) {
+            err = error;
+        }
+
+        expect(err).to.not.exist();
     });
 
-    it('sanitizes payload on a per route config', (done) => {
+    it('sanitizes payload on a per route options', async () => {
 
-        register({}, (err) => {
+        let err;
 
-            expect(err).to.not.exist();
+        try {
+            await register({});
 
-            server.route({
+            await server.route([{
                 method: 'post',
                 path: '/payloadTestPerRoute',
-                handler: (request, reply) => {
-
-                    return reply(request.payload);
+                handler: (request) => {
+                    return request.payload;
                 },
-                config: {
+                options: {
                     plugins: {
                         disinfect: {
                             disinfectPayload: true
                         }
                     }
                 }
-            });
+            }]);
 
-            server.inject({
-                method: 'post',
-                url: '/payloadTestPerRoute',
-                payload: { a: '<b>hello <i>world</i><script src=foo.js></script></b>' }
-            }, (res) => {
+            await Promise.all([
+                server.inject({
+                    method: 'post',
+                    url: '/payloadTestPerRoute',
+                    payload: {a: '<b>hello <i>world</i><script src=foo.js></script></b>'}
+                }).then((res) => {
 
-                expect(res.statusCode).to.be.equal(200);
-                expect(res.result).to.equal({ a: '<b>hello <i>world</i></b>' });
+                    expect(res.statusCode).to.be.equal(200);
+                    expect(res.result).to.equal({a: '<b>hello <i>world</i></b>'});
+                })
+            ]);
+        }
 
-                return done();
-            });
-        });
+        catch (error) {
+            err = error;
+        }
+
+        expect(err).to.not.exist();
     });
 
-    it('accepts custom generic sanitizer', (done) => {
+    it('accepts custom generic sanitizer', async () => {
 
-        register({
-            genericSanitizer: (obj) => {
+        let err;
 
-                const keys = Object.keys(obj);
+        try {
+            await register({
+                genericSanitizer: (obj) => {
 
-                for (let i = 0; i < keys.length; ++i) {
-                    obj[keys[i]] = obj[keys[i]] + 'x';
+                    const keys = Object.keys(obj);
+
+                    for (let i = 0; i < keys.length; ++i) {
+                        obj[keys[i]] = obj[keys[i]] + 'x';
+                    }
+
+                    return obj;
                 }
-
-                return obj;
-            }
-        }, (err) => {
-
-            expect(err).to.not.exist();
-
-            Async.series([
-                (doneTest) => {
-
-                    server.inject({
-                        method: 'get',
-                        url: '/queryTest?a=a&b=b&c=c'
-                    }, (res) => {
-
-                        expect(res.statusCode).to.be.equal(200);
-                        expect(res.result).to.equal({ a: 'ax', b: 'bx', c: 'cx' });
-
-                        return doneTest();
-                    });
-                },
-                (doneTest) => {
-
-                    server.inject({
-                        method: 'get',
-                        url: '/paramsTest/a/b'
-                    }, (res) => {
-
-                        expect(res.statusCode).to.be.equal(200);
-                        expect(res.result).to.equal({ a: 'ax', b: 'bx' });
-
-                        return doneTest();
-                    });
-                },
-                (doneTest) => {
-
-                    server.inject({
-                        method: 'post',
-                        url: '/payloadTest',
-                        payload: { a: 'a', b: 'b', c: 'c' }
-                    }, (res) => {
-
-                        expect(res.statusCode).to.be.equal(200);
-                        expect(res.result).to.equal({ a: 'ax', b: 'bx', c: 'cx' });
-
-                        return doneTest();
-                    });
-                }
-            ], () => {
-
-                return done();
             });
-        });
+
+            await Promise.all([
+                server.inject({
+                    method: 'get',
+                    url: '/queryTest?a=a&b=b&c=c'
+                }).then((res) => {
+
+                    expect(res.statusCode).to.be.equal(200);
+                    expect(res.result).to.equal({a: 'ax', b: 'bx', c: 'cx'});
+                }),
+
+                server.inject({
+                    method: 'get',
+                    url: '/paramsTest/a/b'
+                }).then((res) => {
+
+                    expect(res.statusCode).to.be.equal(200);
+                    expect(res.result).to.equal({a: 'ax', b: 'bx'});
+                }),
+
+                server.inject({
+                    method: 'post',
+                    url: '/payloadTest',
+                    payload: {a: 'a', b: 'b', c: 'c'}
+                }).then((res) => {
+
+                    expect(res.statusCode).to.be.equal(200);
+                    expect(res.result).to.equal({a: 'ax', b: 'bx', c: 'cx'});
+                })
+            ]);
+        }
+
+        catch (error) {
+            err = error;
+        }
+
+        expect(err).to.not.exist();
     });
 
-    it('accepts generic sanitizer on a per route config', (done) => {
+    it('accepts generic sanitizer on a per route options', async () => {
 
-        register({}, (err) => {
+        let err;
 
-            expect(err).to.not.exist();
+        try {
+            await register({});
 
-            server.route({
+            await server.route([{
                 method: 'get',
                 path: '/queryTestPerRoute',
-                handler: (request, reply) => {
-
-                    return reply(request.query);
+                handler: (request) => {
+                    return request.query;
                 },
-                config: {
+                options: {
                     plugins: {
                         disinfect: {
                             genericSanitizer: (obj) => {
@@ -703,16 +683,13 @@ describe('registration and functionality', () => {
                         }
                     }
                 }
-            });
-
-            server.route({
+            }, {
                 method: 'get',
                 path: '/paramsTestPerRoute/{a}/{b?}',
-                handler: (request, reply) => {
-
-                    return reply(request.params);
+                handler: (request) => {
+                    return request.params;
                 },
-                config: {
+                options: {
                     plugins: {
                         disinfect: {
                             genericSanitizer: (obj) => {
@@ -728,16 +705,13 @@ describe('registration and functionality', () => {
                         }
                     }
                 }
-            });
-
-            server.route({
+            }, {
                 method: 'post',
                 path: '/payloadTestPerRoute',
-                handler: (request, reply) => {
-
-                    return reply(request.payload);
+                handler: (request) => {
+                    return request.payload;
                 },
-                config: {
+                options: {
                     plugins: {
                         disinfect: {
                             genericSanitizer: (obj) => {
@@ -753,100 +727,97 @@ describe('registration and functionality', () => {
                         }
                     }
                 }
-            });
+            }]);
 
-            Async.series([
-                (doneTest) => {
+            await Promise.all([
+                server.inject({
+                    method: 'get',
+                    url: '/queryTestPerRoute?a=a&b=b&c=c'
+                }).then((res) => {
 
-                    server.inject({
-                        method: 'get',
-                        url: '/queryTestPerRoute?a=a&b=b&c=c'
-                    }, (res) => {
+                    expect(res.statusCode).to.be.equal(200);
+                    expect(res.result).to.equal({a: 'a1', b: 'b1', c: 'c1'});
+                }),
 
-                        expect(res.statusCode).to.be.equal(200);
-                        expect(res.result).to.equal({ a: 'a1', b: 'b1', c: 'c1' });
+                server.inject({
+                    method: 'get',
+                    url: '/paramsTestPerRoute/a/b'
+                }).then((res) => {
 
-                        return doneTest();
-                    });
-                },
-                (doneTest) => {
+                    expect(res.statusCode).to.be.equal(200);
+                    expect(res.result).to.equal({a: 'a2', b: 'b2'});
+                }),
 
-                    server.inject({
-                        method: 'get',
-                        url: '/paramsTestPerRoute/a/b'
-                    }, (res) => {
+                server.inject({
+                    method: 'post',
+                    url: '/payloadTestPerRoute',
+                    payload: {a: 'a', b: 'b', c: 'c'}
+                }).then((res) => {
 
-                        expect(res.statusCode).to.be.equal(200);
-                        expect(res.result).to.equal({ a: 'a2', b: 'b2' });
+                    expect(res.statusCode).to.be.equal(200);
+                    expect(res.result).to.equal({a: 'a3', b: 'b3', c: 'c3'});
+                })
+            ]);
+        }
 
-                        return doneTest();
-                    });
-                },
-                (doneTest) => {
+        catch (error) {
+            err = error;
+        }
 
-                    server.inject({
-                        method: 'post',
-                        url: '/payloadTestPerRoute',
-                        payload: { a: 'a', b: 'b', c: 'c' }
-                    }, (res) => {
-
-                        expect(res.statusCode).to.be.equal(200);
-                        expect(res.result).to.equal({ a: 'a3', b: 'b3', c: 'c3' });
-
-                        return doneTest();
-                    });
-                }
-            ], () => {
-
-                return done();
-            });
-        });
+        expect(err).to.not.exist();
     });
 
-    it('accepts query sanitizer', (done) => {
+    it('accepts query sanitizer', async () => {
 
-        register({
-            querySanitizer: (obj) => {
+        let err;
 
-                const keys = Object.keys(obj);
+        try {
+            await register({
+                querySanitizer: (obj) => {
 
-                for (let i = 0; i < keys.length; ++i) {
-                    obj[keys[i]] = obj[keys[i]] + 'q';
+                    const keys = Object.keys(obj);
+
+                    for (let i = 0; i < keys.length; ++i) {
+                        obj[keys[i]] = obj[keys[i]] + 'q';
+                    }
+
+                    return obj;
                 }
-
-                return obj;
-            }
-        }, (err) => {
-
-            expect(err).to.not.exist();
-
-            server.inject({
-                method: 'get',
-                url: '/queryTest?a=a&b=b&c=c'
-            }, (res) => {
-
-                expect(res.statusCode).to.be.equal(200);
-                expect(res.result).to.equal({ a: 'aq', b: 'bq', c: 'cq' });
-
-                return done();
             });
-        });
+
+            await Promise.all([
+                server.inject({
+                    method: 'get',
+                    url: '/queryTest?a=a&b=b&c=c'
+                }).then((res) => {
+
+                    expect(res.statusCode).to.be.equal(200);
+                    expect(res.result).to.equal({a: 'aq', b: 'bq', c: 'cq'});
+                })
+            ]);
+        }
+
+        catch (error) {
+            err = error;
+        }
+
+        expect(err).to.not.exist();
     });
 
-    it('accepts query sanitizer on a per route config', (done) => {
+    it('accepts query sanitizer on a per route options', async () => {
 
-        register({}, (err) => {
+        let err;
 
-            expect(err).to.not.exist();
+        try {
+            await register({});
 
-            server.route({
+            await server.route([{
                 method: 'get',
                 path: '/queryTestPerRoute',
-                handler: (request, reply) => {
-
-                    return reply(request.query);
+                handler: (request) => {
+                    return request.query;
                 },
-                config: {
+                options: {
                     plugins: {
                         disinfect: {
                             querySanitizer: (obj) => {
@@ -862,70 +833,83 @@ describe('registration and functionality', () => {
                         }
                     }
                 }
-            });
+            }]);
 
-            server.inject({
-                method: 'get',
-                url: '/queryTestPerRoute?a=a&b=b&c=c'
-            }, (res) => {
+            await Promise.all([
+                server.inject({
+                    method: 'get',
+                    url: '/queryTestPerRoute?a=a&b=b&c=c'
+                }).then((res) => {
 
-                expect(res.statusCode).to.be.equal(200);
-                expect(res.result).to.equal({ a: 'aq1', b: 'bq1', c: 'cq1' });
+                    expect(res.statusCode).to.be.equal(200);
+                    expect(res.result).to.equal({a: 'aq1', b: 'bq1', c: 'cq1'});
+                })
+            ]);
+        }
 
-                return done();
-            });
-        });
+        catch (error) {
+            err = error;
+        }
+
+        expect(err).to.not.exist();
     });
 
-    it('accepts params sanitizer', (done) => {
+    it('accepts params sanitizer', async () => {
 
-        register({
-            paramsSanitizer: (obj) => {
+        let err;
 
-                const keys = Object.keys(obj);
+        try {
+            await register({
+                paramsSanitizer: (obj) => {
 
-                for (let i = 0; i < keys.length; ++i) {
-                    obj[keys[i]] = obj[keys[i]] + 'm';
+                    const keys = Object.keys(obj);
+
+                    for (let i = 0; i < keys.length; ++i) {
+                        obj[keys[i]] = obj[keys[i]] + 'm';
+                    }
+
+                    return obj;
                 }
-
-                return obj;
-            }
-        }, (err) => {
-
-            expect(err).to.not.exist();
-
-            server.inject({
-                method: 'get',
-                url: '/paramsTest/a/b'
-            }, (res) => {
-
-                expect(res.statusCode).to.be.equal(200);
-                expect(res.result).to.equal({ a: 'am', b: 'bm' });
-
-                return done();
             });
-        });
+
+            await Promise.all([
+                server.inject({
+                    method: 'get',
+                    url: '/paramsTest/a/b'
+                }).then((res) => {
+
+                    expect(res.statusCode).to.be.equal(200);
+                    expect(res.result).to.equal({a: 'am', b: 'bm'});
+                })
+            ]);
+        }
+
+        catch (error) {
+            err = error;
+        }
+
+        expect(err).to.not.exist();
     });
 
-    it('accepts params sanitizer on a per route config', (done) => {
+    it('accepts params sanitizer on a per route options', async () => {
 
-        register({
-            paramsSanitizer: (obj) => {
+        let err;
 
-                return obj;
-            }
-        }, (err) => {
+        try {
+            await register({
+                paramsSanitizer: (obj) => {
 
-            expect(err).to.not.exist();
+                    return obj;
+                }
+            });
 
-            server.route({
+            await server.route([{
                 method: 'get',
                 path: '/paramsTestPerRoute/{a}/{b?}',
-                handler: (request, reply) => {
-
-                    return reply(request.params);
+                handler: (request) => {
+                    return request.params;
                 },
-                config: {
+                options: {
                     plugins: {
                         disinfect: {
                             paramsSanitizer: (obj) => {
@@ -941,66 +925,79 @@ describe('registration and functionality', () => {
                         }
                     }
                 }
-            });
+            }]);
 
-            server.inject({
-                method: 'get',
-                url: '/paramsTestPerRoute/a/b'
-            }, (res) => {
+            await Promise.all([
+                server.inject({
+                    method: 'get',
+                    url: '/paramsTestPerRoute/a/b'
+                }).then((res) => {
 
-                expect(res.statusCode).to.be.equal(200);
-                expect(res.result).to.equal({ a: 'am1', b: 'bm1' });
+                    expect(res.statusCode).to.be.equal(200);
+                    expect(res.result).to.equal({a: 'am1', b: 'bm1'});
+                })
+            ]);
+        }
 
-                return done();
-            });
-        });
+        catch (error) {
+            err = error;
+        }
+
+        expect(err).to.not.exist();
     });
 
-    it('accepts payload sanitizer', (done) => {
+    it('accepts payload sanitizer', async () => {
 
-        register({
-            payloadSanitizer: (obj) => {
+        let err;
 
-                const keys = Object.keys(obj);
+        try {
+            await register({
+                payloadSanitizer: (obj) => {
 
-                for (let i = 0; i < keys.length; ++i) {
-                    obj[keys[i]] = obj[keys[i]] + 'p';
+                    const keys = Object.keys(obj);
+
+                    for (let i = 0; i < keys.length; ++i) {
+                        obj[keys[i]] = obj[keys[i]] + 'p';
+                    }
+
+                    return obj;
                 }
-
-                return obj;
-            }
-        }, (err) => {
-
-            expect(err).to.not.exist();
-
-            server.inject({
-                method: 'post',
-                url: '/payloadTest',
-                payload: { a: 'a', b: 'b', c: 'c' }
-            }, (res) => {
-
-                expect(res.statusCode).to.be.equal(200);
-                expect(res.result).to.equal({ a: 'ap', b: 'bp', c: 'cp' });
-
-                return done();
             });
-        });
+
+            await Promise.all([
+                server.inject({
+                    method: 'post',
+                    url: '/payloadTest',
+                    payload: {a: 'a', b: 'b', c: 'c'}
+                }).then((res) => {
+
+                    expect(res.statusCode).to.be.equal(200);
+                    expect(res.result).to.equal({a: 'ap', b: 'bp', c: 'cp'});
+                })
+            ]);
+        }
+
+        catch (error) {
+            err = error;
+        }
+
+        expect(err).to.not.exist();
     });
 
-    it('accepts payload sanitizer a per route config', (done) => {
+    it('accepts payload sanitizer a per route options', async () => {
 
-        register({}, (err) => {
+        let err;
 
-            expect(err).to.not.exist();
+        try {
+            await register({});
 
-            server.route({
+            await server.route([{
                 method: 'post',
                 path: '/payloadTestPerRoute',
-                handler: (request, reply) => {
-
-                    return reply(request.payload);
+                handler: (request) => {
+                    return request.payload;
                 },
-                config: {
+                options: {
                     plugins: {
                         disinfect: {
                             payloadSanitizer: (obj) => {
@@ -1016,19 +1013,25 @@ describe('registration and functionality', () => {
                         }
                     }
                 }
-            });
+            }]);
 
-            server.inject({
-                method: 'post',
-                url: '/payloadTestPerRoute',
-                payload: { a: 'a', b: 'b', c: 'c' }
-            }, (res) => {
+            await Promise.all([
+                server.inject({
+                    method: 'post',
+                    url: '/payloadTestPerRoute',
+                    payload: {a: 'a', b: 'b', c: 'c'}
+                }).then((res) => {
 
-                expect(res.statusCode).to.be.equal(200);
-                expect(res.result).to.equal({ a: 'ap1', b: 'bp1', c: 'cp1' });
+                    expect(res.statusCode).to.be.equal(200);
+                    expect(res.result).to.equal({a: 'ap1', b: 'bp1', c: 'cp1'});
+                })
+            ]);
+        }
 
-                return done();
-            });
-        });
+        catch (error) {
+            err = error;
+        }
+
+        expect(err).to.not.exist();
     });
 });

@@ -1,6 +1,6 @@
 {
   "parserOptions": {
-    "ecmaVersion": 6
+    "ecmaVersion": 8
   },
   "env": {
     "node": true,
@@ -120,7 +120,6 @@
     "no-this-before-super": 2,
     "no-use-before-define": 2,
     "no-constant-condition": 2,
-    "no-unused-expressions": 2,
     "no-inner-declarations": 2,
     "no-extra-boolean-cast": 2,
     "no-dupe-class-members": 2,
