@@ -6,7 +6,6 @@
 [![NPM Downloads](https://img.shields.io/npm/dt/disinfect.svg?maxAge=2592000)](https://www.npmjs.com/disinfect)<br>
 [![Dependency Status](https://david-dm.org/genediazjr/disinfect.svg)](https://david-dm.org/genediazjr/disinfect)
 [![Known Vulnerabilities](https://snyk.io/test/github/genediazjr/disinfect/badge.svg)](https://snyk.io/test/github/genediazjr/disinfect)
-[![NSP Status](https://nodesecurity.io/orgs/genediazjr/projects/57a4e17d-bf27-4150-b763-3c92b244d2c5/badge)](https://nodesecurity.io/orgs/genediazjr/projects/57a4e17d-bf27-4150-b763-3c92b244d2c5)
 
 Hapi plugin to apply Google's [Caja](https://github.com/google/caja) HTML Sanitizer on route query, payload, and params.
 
