@@ -1,6 +1,6 @@
 {
   "name": "disinfect",
-  "version": "1.0.0",
+  "version": "1.1.0",
   "author": "Gene Diaz <genediazjr@gmail.com> (http://genediazjr.com/)",
   "description": "Request query, payload, and params sanitization",
   "keywords": [
