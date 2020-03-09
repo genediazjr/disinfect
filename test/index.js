@@ -17,7 +17,7 @@ describe('registration and functionality', () => {
 
     beforeEach(async () => {
 
-        server = new Hapi.Server({port: 80});
+        server = new Hapi.Server({ port: 80 });
 
         await server.route([{
             method: 'get',
@@ -41,7 +41,7 @@ describe('registration and functionality', () => {
     });
 
     const register = async (options) => {
-        return server.register({plugin: Plugin, options});
+        return server.register({ plugin: Plugin, options });
     };
 
     it('registers without options', async () => {
@@ -110,14 +110,14 @@ describe('registration and functionality', () => {
                 handler: (request) => {
                     return request.query;
                 },
-                options: {plugins: {disinfect: false}}
+                options: { plugins: { disinfect: false } }
             }, {
                 method: 'post',
                 path: '/disabled',
                 handler: (request) => {
                     return request.payload;
                 },
-                options: {plugins: {disinfect: false}}
+                options: { plugins: { disinfect: false } }
             }]);
 
             await Promise.all([
@@ -126,17 +126,17 @@ describe('registration and functionality', () => {
                     url: '/disabled?a=&b=&c=c'
                 }).then((res) => {
                     expect(res.statusCode).to.be.equal(200);
-                    expect(res.result).to.equal({a: '', b: '', c: 'c'});
+                    expect(res.result).to.equal({ a: '', b: '', c: 'c' });
                 }),
 
                 server.inject({
                     method: 'post',
                     url: '/disabled',
-                    payload: {a: '', b: '', c: 'c'}
+                    payload: { a: '', b: '', c: 'c' }
                 }).then((res) => {
 
                     expect(res.statusCode).to.be.equal(200);
-                    expect(res.result).to.equal({a: '', b: '', c: 'c'});
+                    expect(res.result).to.equal({ a: '', b: '', c: 'c' });
                 })
             ]);
         }
@@ -164,17 +164,17 @@ describe('registration and functionality', () => {
                 }).then((res) => {
 
                     expect(res.statusCode).to.be.equal(200);
-                    expect(res.result).to.equal({c: 'c'});
+                    expect(res.result).to.equal({ c: 'c' });
                 }),
 
                 server.inject({
                     method: 'post',
                     url: '/payloadTest',
-                    payload: {a: '', b: '', c: 'c'}
+                    payload: { a: '', b: '', c: 'c' }
                 }).then((res) => {
 
                     expect(res.statusCode).to.be.equal(200);
-                    expect(res.result).to.equal({c: 'c'});
+                    expect(res.result).to.equal({ c: 'c' });
                 })
             ]);
         }
@@ -230,17 +230,17 @@ describe('registration and functionality', () => {
                 }).then((res) => {
 
                     expect(res.statusCode).to.be.equal(200);
-                    expect(res.result).to.equal({c: 'c'});
+                    expect(res.result).to.equal({ c: 'c' });
                 }),
 
                 server.inject({
                     method: 'post',
                     url: '/payloadTestPerRoute',
-                    payload: {a: '', b: '', c: 'c'}
+                    payload: { a: '', b: '', c: 'c' }
                 }).then((res) => {
 
                     expect(res.statusCode).to.be.equal(200);
-                    expect(res.result).to.equal({c: 'c'});
+                    expect(res.result).to.equal({ c: 'c' });
                 })
             ]);
         }
@@ -268,7 +268,7 @@ describe('registration and functionality', () => {
                 }).then((res) => {
 
                     expect(res.statusCode).to.be.equal(200);
-                    expect(res.result).to.equal({c: 'c'});
+                    expect(res.result).to.equal({ c: 'c' });
                 }),
 
                 server.inject({
@@ -277,17 +277,17 @@ describe('registration and functionality', () => {
                 }).then((res) => {
 
                     expect(res.statusCode).to.be.equal(200);
-                    expect(res.result).to.equal({b: '5'});
+                    expect(res.result).to.equal({ b: '5' });
                 }),
 
                 server.inject({
                     method: 'post',
                     url: '/payloadTest',
-                    payload: {a: '      ', b: '       ', c: 'c'}
+                    payload: { a: '      ', b: '       ', c: 'c' }
                 }).then((res) => {
 
                     expect(res.statusCode).to.be.equal(200);
-                    expect(res.result).to.equal({c: 'c'});
+                    expect(res.result).to.equal({ c: 'c' });
                 })
             ]);
         }
@@ -355,7 +355,7 @@ describe('registration and functionality', () => {
                 }).then((res) => {
 
                     expect(res.statusCode).to.be.equal(200);
-                    expect(res.result).to.equal({c: 'c'});
+                    expect(res.result).to.equal({ c: 'c' });
                 }),
 
                 server.inject({
@@ -364,17 +364,17 @@ describe('registration and functionality', () => {
                 }).then((res) => {
 
                     expect(res.statusCode).to.be.equal(200);
-                    expect(res.result).to.equal({b: 'c'});
+                    expect(res.result).to.equal({ b: 'c' });
                 }),
 
                 server.inject({
                     method: 'post',
                     url: '/payloadTestPerRoute',
-                    payload: {a: '      ', b: '       ', c: 'c'}
+                    payload: { a: '      ', b: '       ', c: 'c' }
                 }).then((res) => {
 
                     expect(res.statusCode).to.be.equal(200);
-                    expect(res.result).to.equal({c: 'c'});
+                    expect(res.result).to.equal({ c: 'c' });
                 })
             ]);
         }
@@ -402,7 +402,7 @@ describe('registration and functionality', () => {
                 }).then((res) => {
 
                     expect(res.statusCode).to.be.equal(200);
-                    expect(res.result).to.equal({a: '<b>hello <i>world</i></b>'});
+                    expect(res.result).to.equal({ a: '<b>hello <i>world</i></b>' });
                 })
             ]);
         }
@@ -443,7 +443,7 @@ describe('registration and functionality', () => {
                 }).then((res) => {
 
                     expect(res.statusCode).to.be.equal(200);
-                    expect(res.result).to.equal({a: '<b>hello <i>world</i></b>'});
+                    expect(res.result).to.equal({ a: '<b>hello <i>world</i></b>' });
 
                 })
             ]);
@@ -472,7 +472,7 @@ describe('registration and functionality', () => {
                 }).then((res) => {
 
                     expect(res.statusCode).to.be.equal(200);
-                    expect(res.result).to.equal({a: '<b>hello <i>world</i></b>'});
+                    expect(res.result).to.equal({ a: '<b>hello <i>world</i></b>' });
                 })
             ]);
         }
@@ -515,7 +515,7 @@ describe('registration and functionality', () => {
                 }).then((res) => {
 
                     expect(res.statusCode).to.be.equal(200);
-                    expect(res.result).to.equal({a: '<b>hello <i>world</i></b>'});
+                    expect(res.result).to.equal({ a: '<b>hello <i>world</i></b>' });
                 })
             ]);
         }
@@ -540,11 +540,11 @@ describe('registration and functionality', () => {
                 server.inject({
                     method: 'post',
                     url: '/payloadTest',
-                    payload: {a: '<b>hello <i>world</i><script src=foo.js></script></b>'}
+                    payload: { a: '<b>hello <i>world</i><script src=foo.js></script></b>' }
                 }).then((res) => {
 
                     expect(res.statusCode).to.be.equal(200);
-                    expect(res.result).to.equal({a: '<b>hello <i>world</i></b>'});
+                    expect(res.result).to.equal({ a: '<b>hello <i>world</i></b>' });
                 })
             ]);
         }
@@ -554,6 +554,75 @@ describe('registration and functionality', () => {
         }
 
         expect(err).to.not.exist();
+    });
+
+    it('sanitizes payload and doesnt cast arrays to strings on a per route config', async () => {
+
+        let err;
+
+        try {
+            await register({});
+
+            await server.route([{
+                method: 'post',
+                path: '/payloadTestPerRoute',
+                handler: (request) => {
+                    return request.payload;
+                },
+                options: {
+                    plugins: {
+                        disinfect: {
+                            disinfectPayload: true
+                        }
+                    }
+                }
+            }]);
+
+            await Promise.all([
+                server.inject({
+                    method: 'post',
+                    url: '/payloadTestPerRoute',
+                    payload: {
+                        text1: 'test a',
+                        text2: 'test b',
+                        array: [
+                            { text3: 'test c', text4: 'test d' },
+                            { text3: 'test e', text4: '<b>hello <i>world</i><script src=foo.js></script></b>' },
+                            'eddie'
+                        ],
+                        array2: [
+                            ['a', 'b<script src=foo.js></script>', 'c'],
+                            { a: '<script src=foo.js></script>eddie' }
+                        ],
+                        obj: { a: '<script src=foo.js></script>eddie' }
+                    }
+                }).then((res) => {
+
+                    expect(res.statusCode).to.be.equal(200);
+                    expect(res.result).to.equal({
+                        text1: 'test a',
+                        text2: 'test b',
+                        array: [
+                            { text3: 'test c', text4: 'test d' },
+                            { text3: 'test e', text4: '<b>hello <i>world</i></b>' },
+                            'eddie'
+                        ],
+                        array2: [
+                            ['a', 'b', 'c'],
+                            { a: 'eddie' }
+                        ],
+                        obj: { a: 'eddie' }
+                    });
+                })
+            ]);
+        }
+
+        catch (error) {
+            err = error;
+        }
+
+        expect(err).to.not.exist();
+
     });
 
     it('sanitizes payload on a per route options', async () => {
@@ -582,11 +651,11 @@ describe('registration and functionality', () => {
                 server.inject({
                     method: 'post',
                     url: '/payloadTestPerRoute',
-                    payload: {a: '<b>hello <i>world</i><script src=foo.js></script></b>'}
+                    payload: { a: '<b>hello <i>world</i><script src=foo.js></script></b>' }
                 }).then((res) => {
 
                     expect(res.statusCode).to.be.equal(200);
-                    expect(res.result).to.equal({a: '<b>hello <i>world</i></b>'});
+                    expect(res.result).to.equal({ a: '<b>hello <i>world</i></b>' });
                 })
             ]);
         }
@@ -623,7 +692,7 @@ describe('registration and functionality', () => {
                 }).then((res) => {
 
                     expect(res.statusCode).to.be.equal(200);
-                    expect(res.result).to.equal({a: 'ax', b: 'bx', c: 'cx'});
+                    expect(res.result).to.equal({ a: 'ax', b: 'bx', c: 'cx' });
                 }),
 
                 server.inject({
@@ -632,17 +701,17 @@ describe('registration and functionality', () => {
                 }).then((res) => {
 
                     expect(res.statusCode).to.be.equal(200);
-                    expect(res.result).to.equal({a: 'ax', b: 'bx'});
+                    expect(res.result).to.equal({ a: 'ax', b: 'bx' });
                 }),
 
                 server.inject({
                     method: 'post',
                     url: '/payloadTest',
-                    payload: {a: 'a', b: 'b', c: 'c'}
+                    payload: { a: 'a', b: 'b', c: 'c' }
                 }).then((res) => {
 
                     expect(res.statusCode).to.be.equal(200);
-                    expect(res.result).to.equal({a: 'ax', b: 'bx', c: 'cx'});
+                    expect(res.result).to.equal({ a: 'ax', b: 'bx', c: 'cx' });
                 })
             ]);
         }
@@ -736,7 +805,7 @@ describe('registration and functionality', () => {
                 }).then((res) => {
 
                     expect(res.statusCode).to.be.equal(200);
-                    expect(res.result).to.equal({a: 'a1', b: 'b1', c: 'c1'});
+                    expect(res.result).to.equal({ a: 'a1', b: 'b1', c: 'c1' });
                 }),
 
                 server.inject({
@@ -745,17 +814,17 @@ describe('registration and functionality', () => {
                 }).then((res) => {
 
                     expect(res.statusCode).to.be.equal(200);
-                    expect(res.result).to.equal({a: 'a2', b: 'b2'});
+                    expect(res.result).to.equal({ a: 'a2', b: 'b2' });
                 }),
 
                 server.inject({
                     method: 'post',
                     url: '/payloadTestPerRoute',
-                    payload: {a: 'a', b: 'b', c: 'c'}
+                    payload: { a: 'a', b: 'b', c: 'c' }
                 }).then((res) => {
 
                     expect(res.statusCode).to.be.equal(200);
-                    expect(res.result).to.equal({a: 'a3', b: 'b3', c: 'c3'});
+                    expect(res.result).to.equal({ a: 'a3', b: 'b3', c: 'c3' });
                 })
             ]);
         }
@@ -792,7 +861,7 @@ describe('registration and functionality', () => {
                 }).then((res) => {
 
                     expect(res.statusCode).to.be.equal(200);
-                    expect(res.result).to.equal({a: 'aq', b: 'bq', c: 'cq'});
+                    expect(res.result).to.equal({ a: 'aq', b: 'bq', c: 'cq' });
                 })
             ]);
         }
@@ -842,7 +911,7 @@ describe('registration and functionality', () => {
                 }).then((res) => {
 
                     expect(res.statusCode).to.be.equal(200);
-                    expect(res.result).to.equal({a: 'aq1', b: 'bq1', c: 'cq1'});
+                    expect(res.result).to.equal({ a: 'aq1', b: 'bq1', c: 'cq1' });
                 })
             ]);
         }
@@ -879,7 +948,7 @@ describe('registration and functionality', () => {
                 }).then((res) => {
 
                     expect(res.statusCode).to.be.equal(200);
-                    expect(res.result).to.equal({a: 'am', b: 'bm'});
+                    expect(res.result).to.equal({ a: 'am', b: 'bm' });
                 })
             ]);
         }
@@ -934,7 +1003,7 @@ describe('registration and functionality', () => {
                 }).then((res) => {
 
                     expect(res.statusCode).to.be.equal(200);
-                    expect(res.result).to.equal({a: 'am1', b: 'bm1'});
+                    expect(res.result).to.equal({ a: 'am1', b: 'bm1' });
                 })
             ]);
         }
@@ -968,11 +1037,11 @@ describe('registration and functionality', () => {
                 server.inject({
                     method: 'post',
                     url: '/payloadTest',
-                    payload: {a: 'a', b: 'b', c: 'c'}
+                    payload: { a: 'a', b: 'b', c: 'c' }
                 }).then((res) => {
 
                     expect(res.statusCode).to.be.equal(200);
-                    expect(res.result).to.equal({a: 'ap', b: 'bp', c: 'cp'});
+                    expect(res.result).to.equal({ a: 'ap', b: 'bp', c: 'cp' });
                 })
             ]);
         }
@@ -1019,11 +1088,11 @@ describe('registration and functionality', () => {
                 server.inject({
                     method: 'post',
                     url: '/payloadTestPerRoute',
-                    payload: {a: 'a', b: 'b', c: 'c'}
+                    payload: { a: 'a', b: 'b', c: 'c' }
                 }).then((res) => {
 
                     expect(res.statusCode).to.be.equal(200);
-                    expect(res.result).to.equal({a: 'ap1', b: 'bp1', c: 'cp1'});
+                    expect(res.result).to.equal({ a: 'ap1', b: 'bp1', c: 'cp1' });
                 })
             ]);
         }
