@@ -18,7 +18,7 @@
   "bugs": "https://github.com/genediazjr/disinfect/issues",
   "main": "lib/index.js",
   "engines": {
-    "node": ">=4.0.0"
+    "node": ">=12.22.1"
   },
   "scripts": {
     "test": "lab -c -v -L -a @hapi/code",
