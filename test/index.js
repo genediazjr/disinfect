@@ -1,8 +1,8 @@
 'use strict';
 
 const Hapi = require('@hapi/hapi');
-const Code = require('code');
-const Lab = require('lab');
+const Code = require('@hapi/code');
+const Lab = require('@hapi/lab');
 const Plugin = require('../');
 
 const expect = Code.expect;
