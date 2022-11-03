@@ -132,11 +132,11 @@ describe('registration and functionality', () => {
                 server.inject({
                     method: 'post',
                     url: '/disabled',
-                    payload: { a: '', b: '', c: 'c' }
+                    payload: { a: '', b: '', c: 'c', d: null }
                 }).then((res) => {
 
                     expect(res.statusCode).to.be.equal(200);
-                    expect(res.result).to.equal({ a: '', b: '', c: 'c' });
+                    expect(res.result).to.equal({ a: '', b: '', c: 'c', d: null });
                 })
             ]);
         }
@@ -236,7 +236,7 @@ describe('registration and functionality', () => {
                 server.inject({
                     method: 'post',
                     url: '/payloadTestPerRoute',
-                    payload: { a: '', b: '', c: 'c' }
+                    payload: { a: '', b: '', c: 'c', d: null }
                 }).then((res) => {
 
                     expect(res.statusCode).to.be.equal(200);
@@ -540,11 +540,11 @@ describe('registration and functionality', () => {
                 server.inject({
                     method: 'post',
                     url: '/payloadTest',
-                    payload: { a: '<b>hello <i>world</i><script src=foo.js></script></b>' }
+                    payload: { a: '<b>hello <i>world</i><script src=foo.js></script></b>', b: null }
                 }).then((res) => {
 
                     expect(res.statusCode).to.be.equal(200);
-                    expect(res.result).to.equal({ a: '<b>hello <i>world</i></b>' });
+                    expect(res.result).to.equal({ a: '<b>hello <i>world</i></b>', b: null });
                 })
             ]);
         }
@@ -651,7 +651,7 @@ describe('registration and functionality', () => {
                 server.inject({
                     method: 'post',
                     url: '/payloadTestWithWrongHeader',
-                    headers: { 'content-type': 'text/javascript'},
+                    headers: { 'content-type': 'text/javascript' },
                     payload: { text1: 'test a', text2: 'test b' }
                 }).then((res) => {
                     expect(res.statusCode).to.be.equal(200);
