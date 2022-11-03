@@ -625,6 +625,49 @@ describe('registration and functionality', () => {
 
     });
 
+    it('sanitizes payload and handle when payload is json with content-type other than application/json', async () => {
+
+        let err;
+
+        try {
+            await register({});
+
+            await server.route([{
+                method: 'post',
+                path: '/payloadTestWithWrongHeader',
+                handler: (request) => {
+                    return request.payload;
+                },
+                options: {
+                    plugins: {
+                        disinfect: {
+                            disinfectPayload: true
+                        }
+                    }
+                }
+            }]);
+
+            await Promise.all([
+                server.inject({
+                    method: 'post',
+                    url: '/payloadTestWithWrongHeader',
+                    headers: { 'content-type': 'text/javascript'},
+                    payload: { text1: 'test a', text2: 'test b' }
+                }).then((res) => {
+                    expect(res.statusCode).to.be.equal(200);
+                    expect(res.result).to.equal('{"text1":"test a","text2":"test b"}');
+                })
+            ]);
+        }
+
+        catch (error) {
+            err = error;
+        }
+
+        expect(err).to.not.exist();
+
+    });
+
     it('sanitizes payload on a per route options', async () => {
 
         let err;
