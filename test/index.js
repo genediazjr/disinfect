@@ -1,8 +1,8 @@
 'use strict';
 
-const Hapi = require('hapi');
-const Code = require('code');
-const Lab = require('lab');
+const Hapi = require('@hapi/hapi');
+const Code = require('@hapi/code');
+const Lab = require('@hapi/lab');
 const Plugin = require('../');
 
 const expect = Code.expect;
@@ -55,7 +55,7 @@ describe('registration and functionality', () => {
                 method: 'get',
                 path: '/',
                 handler: () => {
-                    return '';
+                    return 'Hello';
                 }
             }]);
 
@@ -66,7 +66,7 @@ describe('registration and functionality', () => {
                 }).then((res) => {
 
                     expect(res.statusCode).to.be.equal(200);
-                    expect(res.result).to.equal('');
+                    expect(res.result).to.equal('Hello');
                 })
             ]);
         }
