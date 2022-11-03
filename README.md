@@ -1,5 +1,5 @@
 # disinfect
-[![Build Status](https://travis-ci.org/genediazjr/disinfect.svg?branch=master)](https://travis-ci.org/genediazjr/disinfect)
+[![Build Status](https://travis-ci.com/genediazjr/disinfect.svg?branch=master)](https://travis-ci.com/genediazjr/disinfect)
 [![Coverage Status](https://coveralls.io/repos/github/genediazjr/disinfect/badge.svg?branch=master)](https://coveralls.io/github/genediazjr/disinfect?branch=master)
 [![NPM Version](https://badge.fury.io/js/disinfect.svg)](https://www.npmjs.com/disinfect)
 [![NPM Downloads](https://img.shields.io/npm/dt/disinfect.svg?maxAge=2592000)](https://www.npmjs.com/disinfect)
