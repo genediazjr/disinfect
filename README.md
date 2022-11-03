@@ -1,10 +1,9 @@
 # disinfect
 [![Build Status](https://travis-ci.org/genediazjr/disinfect.svg?branch=master)](https://travis-ci.org/genediazjr/disinfect)
 [![Coverage Status](https://coveralls.io/repos/github/genediazjr/disinfect/badge.svg?branch=master)](https://coveralls.io/github/genediazjr/disinfect?branch=master)
-[![Code Climate](https://codeclimate.com/github/genediazjr/disinfect/badges/gpa.svg)](https://codeclimate.com/github/genediazjr/disinfect)
 [![NPM Version](https://badge.fury.io/js/disinfect.svg)](https://www.npmjs.com/disinfect)
-[![NPM Downloads](https://img.shields.io/npm/dt/disinfect.svg?maxAge=2592000)](https://www.npmjs.com/disinfect)<br>
-[![Dependency Status](https://david-dm.org/genediazjr/disinfect.svg)](https://david-dm.org/genediazjr/disinfect)
+[![NPM Downloads](https://img.shields.io/npm/dt/disinfect.svg?maxAge=2592000)](https://www.npmjs.com/disinfect)
+[![Code Climate](https://codeclimate.com/github/genediazjr/disinfect/badges/gpa.svg)](https://codeclimate.com/github/genediazjr/disinfect)
 [![Known Vulnerabilities](https://snyk.io/test/github/genediazjr/disinfect/badge.svg)](https://snyk.io/test/github/genediazjr/disinfect)
 
 Hapi plugin to apply Google's [Caja](https://github.com/google/caja) HTML Sanitizer on route query, payload, and params.
